@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/todo.dart';
 import '../services/database_helper.dart';
+import '../theme/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -14,7 +16,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Todo List')),
+      appBar: AppBar(
+        title: Text('Todo List'),
+        actions: [
+          IconButton(
+            icon: Icon(context.watch<ThemeProvider>().isDarkMode
+                ? Icons.light_mode
+                : Icons.dark_mode),
+            onPressed: () {
+              context.read<ThemeProvider>().toggleTheme();
+            },
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Padding(
