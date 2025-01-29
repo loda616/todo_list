@@ -1,7 +1,18 @@
-class Todo {
+import 'package:hive/hive.dart';
+part 'todo.g.dart';
+
+@HiveType(typeId: 0)
+class Todo extends HiveObject {
+  @HiveField(0)
   int? id;
+
+  @HiveField(1)
   String title;
+
+  @HiveField(2)
   bool isCompleted;
+
+  @HiveField(3)
   DateTime? date;
 
   Todo({
@@ -10,22 +21,4 @@ class Todo {
     this.isCompleted = false,
     this.date,
   });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'title': title,
-      'isCompleted': isCompleted ? 1 : 0,
-      'date': date?.toIso8601String(),
-    };
-  }
-
-  factory Todo.fromMap(Map<String, dynamic> map) {
-    return Todo(
-      id: map['id'],
-      title: map['title'],
-      isCompleted: map['isCompleted'] == 1,
-      date: map['date'] != null ? DateTime.parse(map['date']) : null,
-    );
-  }
 }
