@@ -7,6 +7,8 @@ import '../services/database_helper.dart';
 import '../theme/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
