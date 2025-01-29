@@ -30,7 +30,8 @@ class DatabaseHelper {
       CREATE TABLE todos(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         title TEXT,
-        isCompleted INTEGER
+        isCompleted INTEGER,
+        date TEXT
       )
     ''');
   }

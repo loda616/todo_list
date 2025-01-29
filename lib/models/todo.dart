@@ -2,11 +2,13 @@ class Todo {
   int? id;
   String title;
   bool isCompleted;
+  DateTime? date;
 
   Todo({
     this.id,
     required this.title,
     this.isCompleted = false,
+    this.date,
   });
 
   Map<String, dynamic> toMap() {
@@ -14,6 +16,7 @@ class Todo {
       'id': id,
       'title': title,
       'isCompleted': isCompleted ? 1 : 0,
+      'date': date?.toIso8601String(),
     };
   }
 
@@ -22,6 +25,7 @@ class Todo {
       id: map['id'],
       title: map['title'],
       isCompleted: map['isCompleted'] == 1,
+      date: map['date'] != null ? DateTime.parse(map['date']) : null,
     );
   }
 }
