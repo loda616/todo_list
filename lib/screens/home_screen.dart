@@ -3,16 +3,19 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import '../models/todo.dart';
-import '../services/database_helper.dart';
+import '../services/todo_service.dart';
 import '../theme/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
+  final TodoService todoService;
+
+  const HomeScreen({Key? key, required this.todoService}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final DatabaseHelper _dbHelper = DatabaseHelper();
   final TextEditingController _controller = TextEditingController();
   DateTime _selectedDate = DateTime.now();
   bool _showCalendar = false;
@@ -77,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: Icon(Icons.add),
                   onPressed: () async {
                     if (_controller.text.isNotEmpty) {
-                      await _dbHelper.insertTodo(
+                      await widget.todoService.addTodo(
                         Todo(
                           title: _controller.text,
                           date: _selectedDate,
@@ -93,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
             child: FutureBuilder<List<Todo>>(
-              future: _dbHelper.getTodos(),
+              future: widget.todoService.getTodos(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) return CircularProgressIndicator();
                 return ListView.builder(
@@ -107,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           value: todo.isCompleted,
                           onChanged: (bool? value) async {
                             todo.isCompleted = value!;
-                            await _dbHelper.updateTodo(todo);
+                            await widget.todoService.updateTodo(todo);
                             setState(() {});
                           },
                         ),
@@ -135,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 );
                                 if (picked != null) {
                                   todo.date = picked;
-                                  await _dbHelper.updateTodo(todo);
+                                  await widget.todoService.updateTodo(todo);
                                   setState(() {});
                                 }
                               },
@@ -143,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () async {
-                                await _dbHelper.deleteTodo(todo.id!);
+                                await widget.todoService.deleteTodo(todo);
                                 setState(() {});
                               },
                             ),
